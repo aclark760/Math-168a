@@ -1,0 +1,86 @@
+---
+title: "Math 168A Homework 1"
+output: pdf_document
+---
+## Austin Clark A91063616
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+First we create a function that takes a given probability p and outputs a vector of the results of 
+a random walk of length 100 with a given probability p. For each step of this function it chooses 1 with 
+probability p and -1 with probability 1-p and then sums the total.
+```{r}
+random_walk <- function(p){
+  v = c(1,-1)
+  x = numeric(100)
+  count = 0
+  p2 <-c(p, 1-p)
+  for( i in 1:100){
+    count = count + sample(v,size = 1, replace = TRUE, prob = p2 )
+    x[i]= count
+  }
+  return(x)
+}
+```
+
+The following Plots are the results of 100 steps of a random walk with probabilitys .4, .5, .6 respectivelly
+
+```{r, echo=FALSE, fig.width=6, fig.height=4}
+
+prob_1 <- random_walk(.4)
+plot.ts(prob_1, xlab = "time", ylab = "", main = "p= .4")
+prob_2 <- random_walk(.5) 
+plot.ts(prob_2,  xlab= "time", ylab = "",main = "p= .5")
+prob_3 <- random_walk(.6)
+plot.ts(prob_3,  xlab= "time", ylab = "",main = "p= .6")
+
+```
+
+Next we write a function to get the final position of 100 steps of a random walk with a given probability 500 times
+
+```{r}
+many_walks = function(p){
+  x = numeric(500)
+  for( i in 1:500){
+    hold = random_walk(p)
+    x[i]= hold[100]
+  }
+  return(x)
+}
+```
+
+Here are the results of the above function in a histogram with probabilities .4, .5, .6
+
+
+```{r, echo=FALSE, fig.width=6, fig.height=5}
+Mwalks_1= many_walks(.4)
+hist(Mwalks_1,breaks = 70,xlab = "final position", main = "500 walks p= .4")
+paste("The mean with a probability of .4 is ", mean(Mwalks_1))
+paste("The variance is ", var(Mwalks_1))
+
+Mwalks_2 = many_walks(.5)
+hist(Mwalks_2,breaks = 70,xlab = "final position", main = "500 walks p= .5")
+paste("The mean with a probability of .5 is ", mean(Mwalks_2))
+paste("The variance is ", var(Mwalks_2))
+
+Mwalks_3 <-many_walks(.6)
+hist(Mwalks_3,breaks = 70,xlab = "final position", main = "500 walks p= .6")
+paste("The mean with a probability of .4 is ", mean(Mwalks_3))
+paste("The variance is ", var(Mwalks_3))
+
+```
+
+Note that the mean changes based on the probability but the variance does not necessarily change
+
+
+
+
+
+
+
+
+
+
+
